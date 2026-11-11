@@ -21,7 +21,7 @@ if (isset($_POST['cancelar'])) {
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Sesion iniciada</title>
-        <link rel="stylesheet" href="webroot/css/estilos.css">
+        <link rel="stylesheet" href="../webroot/css/estilos.css">
     </head>
 
     <body>
@@ -39,13 +39,7 @@ if (isset($_POST['cancelar'])) {
 
         <main>
 
-            <!-- Se muestra el esquema de navegación de la aplicación. -->
-            <div class="arbol-navegacion">
-
-                <img src="../webroot/images/arbolNavegacion.PNG"
-                     alt="Árbol de navegación de la aplicación Login Logoff">
-
-            </div>
+            
 
             <!-- Formulario encargado de regresar al inicio público. -->
             <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">

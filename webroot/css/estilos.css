@@ -14,18 +14,53 @@ body {
     flex-direction: column;
 }
 
+/* CABECERA */
+
 header {
     background-color: #111827;
     color: #ffffff;
     text-align: center;
-    padding: 45px 20px;
+    padding: 30px 20px;
+    min-height: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
 }
+
+.cabecera-logo {
+    position: absolute;
+    left: 40px;
+    display: flex;
+    align-items: center;
+}
+
+.cabecera-logo img {
+    width: 85px;
+    height: auto;
+    display: block;
+}
+
+.cabecera-titulos {
+    width: 100%;
+    text-align: center;
+}
+
 header h1 {
     color: #ffffff;
     font-size: 30px;
     font-weight: 400;
     letter-spacing: 1px;
 }
+
+header h3 {
+    color: #d1d5db;
+    font-size: 17px;
+    font-weight: 400;
+    margin-top: 12px;
+    letter-spacing: 0.5px;
+}
+
 
 main {
     width: 90%;
@@ -35,53 +70,93 @@ main {
     padding: 60px 0;
 }
 
-table {
-    width: 100%;
-    border-collapse: collapse;
-    background-color: #ffffff;
+
+
+main form {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 35px;
 }
 
-th {
+main input[type="submit"] {
     background-color: #111827;
     color: #ffffff;
-    padding: 16px;
-    text-align: left;
-    font-size: 14px;
-    font-weight: 400;
-    letter-spacing: 0.5px;
+    border: 1px solid #111827;
+    padding: 12px 30px;
+    font-size: 15px;
+    font-family: inherit;
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease;
 }
 
-td {
-    padding: 18px 16px;
-    border-bottom: 1px solid #dddddd;
-    font-size: 14px;
+main input[type="submit"]:hover {
+    background-color: #374151;
+    border-color: #374151;
 }
 
-tr:hover {
+.arbol-navegacion {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 35px;
+}
+
+.arbol-navegacion img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+}
+
+/* ESTILOS ORIGINALES DE LA LISTA DE EJERCICIOS */
+
+.Ut {
     background-color: #f7f7f7;
+    padding: 40px 50px;
+    border: 1px solid #e5e5e5;
 }
 
-td:first-child {
-    width: 60px;
+.Ut h2 {
+    font-size: 25px;
+    font-weight: 400;
     text-align: center;
+    margin-bottom: 35px;
+    letter-spacing: 1px;
 }
 
-td:nth-child(3),
-td:nth-child(4) {
-    width: 150px;
-    text-align: center;
+.Ut ul {
+    list-style: none;
 }
 
-table a {
+.Ut li {
+    padding: 20px 10px;
+    border-bottom: 1px solid #dddddd;
+    font-size: 15px;
+    letter-spacing: 0.3px;
+}
+
+.Ut li:last-child {
+    border-bottom: none;
+}
+
+.Ut li:hover {
+    background-color: #eeeeee;
+}
+
+.Ut a {
     color: #111111;
+    margin-left: 10px;
+    font-weight: bold;
     text-decoration: none;
     border-bottom: 1px solid #111111;
 }
 
-table a:hover {
+.Ut a:hover {
     color: #666666;
     border-color: #666666;
 }
+
+
 footer {
     background-color: #111827;
     color: #ffffff;
@@ -103,10 +178,12 @@ footer a:hover {
 .footer-text {
     margin-top: 15px;
 }
+
 .footer-text p {
     font-size: 13px;
     color: #d1d5db;
 }
+
 .footer-text time {
     display: block;
     margin-top: 5px;
@@ -114,19 +191,52 @@ footer a:hover {
     color: #9ca3af;
 }
 
-/* DISEÑO PARA MÓVILES */
+
 @media (max-width: 700px) {
+
+    header {
+        flex-direction: column;
+        padding: 25px 15px;
+        gap: 15px;
+    }
+
+    .cabecera-logo {
+        position: static;
+    }
+
+    .cabecera-logo img {
+        width: 65px;
+    }
+
+    .cabecera-titulos {
+        width: 100%;
+    }
 
     header h1 {
         font-size: 24px;
     }
+
+    header h3 {
+        font-size: 15px;
+    }
+
     main {
         width: 95%;
         padding: 30px 0;
     }
+
+    main form {
+        margin-bottom: 25px;
+    }
+
+    .arbol-navegacion {
+        margin-top: 25px;
+    }
+
     .Ut {
         padding: 25px 20px;
     }
+
     .Ut li {
         font-size: 14px;
     }

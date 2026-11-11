@@ -37,6 +37,13 @@
             <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
                 <input type="submit" name="login" id="login" value="Iniciar sesión">
             </form>
+            <!-- Se muestra el esquema de navegación de la aplicación. -->
+            <div class="arbol-navegacion">
+
+                <img src="webroot/images/arbolNavegacion.PNG"
+                     alt="Árbol de navegación de la aplicación Login Logoff">
+
+            </div>
 
         </main>
         <footer>
