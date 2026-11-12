@@ -32,8 +32,7 @@ if (isset($_POST['cancelar'])) {
             </div>
 
             <div class="cabecera-titulos">
-                <h1>Tema 5. Aplicación Login Logoff</h1>
-                <h3>Sesión Iniciada</h3>
+                <h1>Sesión iniciada</h1>             
             </div>
         </header>
 

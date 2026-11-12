@@ -23,11 +23,13 @@
         <header>
             <div class="cabecera-logo">
                 <img src="webroot/images/logoCandado.jpg" alt="Logo Login Logoff">
+                <br>
+                
             </div>
 
             <div class="cabecera-titulos">
-                <h1>Tema 5. Aplicación Login Logoff</h1>
-                <h3>Inicio público</h3>
+                <h1>Inicio público</h1>
+                
             </div>
         </header>
 
