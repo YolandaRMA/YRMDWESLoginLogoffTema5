@@ -15,7 +15,7 @@ if (isset($_POST['cancelar'])) {
 
 // Se incluye el archivo que contiene los datos de conexión
 // necesarios para establecer la conexión con la base de datos mediante PDO.
-require_once '../config/configDB00_home.php';
+require_once '../config/configDB00.php';
 
 // Se incluye la librería que contiene los métodos
 // utilizados para validar los datos introducidos en el formulario.
