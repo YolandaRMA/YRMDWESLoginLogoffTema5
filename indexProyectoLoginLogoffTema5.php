@@ -1,0 +1,59 @@
+<?php
+/**
+ * @author: Yolanda Rodríguez Moreno
+ * @since: 11/11/2026
+ * Proyecto Login Logoff Tema 5.
+ */
+
+// Se comprueba si se ha pulsado el botón para acceder al login.
+// Si se ha pulsado, se redirige al usuario a la página login.php.
+    if (isset($_POST['login'])) {
+        header("Location: codigoPHP/login.php");
+        exit();
+    }
+?>
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Inicio publico</title>
+        <link rel="stylesheet" href="webroot/css/estilos.css">
+     <body>
+
+        <header>
+            <div class="cabecera-logo">
+                <img src="webroot/images/logoCandado.jpg" alt="Logo Login Logoff">
+                <br>
+                
+            </div>
+
+            <div class="cabecera-titulos">
+                <h1>Inicio público</h1>
+                
+            </div>
+        </header>
+
+        <main>
+
+            <!-- Formulario encargado de dirigir al usuario a la página de login. -->
+            <form action="<?php echo $_SERVER['PHP_SELF']; ?>" method="post">
+                <input type="submit" name="login" id="login" value="Iniciar sesión">
+            </form>
+            <!-- Se muestra el esquema de navegación de la aplicación. -->
+            <div class="arbol-navegacion">
+
+                <img src="webroot/images/arbolNavegacion.PNG"
+                     alt="Árbol de navegación de la aplicación Login Logoff">
+
+            </div>
+
+        </main>
+        <footer>
+            <p><a href="../YRMDWESProyectoDWES/indexProyectoDWES.php">Home</a></p>
+            <div class="footer-text">
+                <p>2026-27 IES Los Sauces. &copy; Todos los derechos reservados.<a href="../index.html">Yolanda Rodríguez Moreno</a></p>
+                <time datetime="2026-11-11">Última actualización: 11 de Octubre de 2026</time>
+            </div>
+        </footer>
+    </body>
+</html>
