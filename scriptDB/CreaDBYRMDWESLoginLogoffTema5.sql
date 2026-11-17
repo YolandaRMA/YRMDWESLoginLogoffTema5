@@ -27,4 +27,4 @@ CREATE TABLE IF NOT EXISTS T02_Departamento (
 
 CREATE USER 'userYRMDWESLoginLogoffTema5'@'%' IDENTIFIED BY 'paso';
 
-GRANT ALL ON YRMDWESLoginLogoffTema5.* TO 'userYRMDWESLoginLogoffTema5'@'%';
+GRANT ALL ON DBYRMDWESLoginLogoffTema5.* TO 'userYRMDWESLoginLogoffTema5'@'%';

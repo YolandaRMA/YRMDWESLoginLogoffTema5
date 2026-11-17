@@ -5,16 +5,24 @@ USE DBYRMDWESLoginLogoffTema5;
 -- La contraseña se genera con SHA2, concatenando el código del usuario
 -- y la palabra 'paso', utilizando el algoritmo SHA-256.
 
-INSERT INTO T01_Usuario VALUES
-('admin', SHA2(CONCAT('admin', 'paso'), 256), 'Administrador', 0, NULL, 'administrador', NULL),
-('amor', SHA2(CONCAT('amor', 'paso'), 256), 'Amor Rodríguez', 0, NULL, 'usuario', NULL),
-('heraclio', SHA2(CONCAT('heraclio', 'paso'), 256), 'Heraclio Borbujo', 0, NULL, 'usuario', NULL),
-('yolanda', SHA2(CONCAT('yolanda', 'paso'), 256), 'Yolanda Rodríguez', 0, NULL, 'usuario', NULL),
-('juanmi', SHA2(CONCAT('juanmi', 'paso'), 256), 'Juan Miguel Domínguez', 0, NULL, 'usuario', NULL),
-('moises', SHA2(CONCAT('moises', 'paso'), 256), 'Moises Domínguez', 0, NULL, 'usuario', NULL),
-('juan', SHA2(CONCAT('juan', 'paso'), 256), 'Juan Rivera', 0, NULL, 'usuario', NULL),
-('alvaro', SHA2(CONCAT('alvaro', 'paso'), 256), 'Alvaro Calderón', 0, NULL, 'usuario', NULL),
-('santiago', SHA2(CONCAT('santiago', 'paso'), 256), 'Santiago González', 0, NULL, 'usuario', NULL);
+INSERT INTO T01_Usuario (
+    T01_CodUsuario,
+    T01_Password,
+    T01_DescUsuario,
+    T01_NumConexiones,
+    T01_Perfil,
+    T01_ImagenUsuario
+) VALUES
+('admin', SHA2(CONCAT('admin', 'paso'), 256), 'Administrador', 0, 'administrador', NULL),
+('amor', SHA2(CONCAT('amor', 'paso'), 256), 'Amor Rodríguez', 0, 'usuario', NULL),
+('heraclio', SHA2(CONCAT('heraclio', 'paso'), 256), 'Heraclio Borbujo', 0, 'usuario', NULL),
+('yolanda', SHA2(CONCAT('yolanda', 'paso'), 256), 'Yolanda Rodríguez', 0, 'usuario', NULL),
+('juanmi', SHA2(CONCAT('juanmi', 'paso'), 256), 'Juan Miguel Domínguez', 0, 'usuario', NULL),
+('moises', SHA2(CONCAT('moises', 'paso'), 256), 'Moises Domínguez', 0, 'usuario', NULL),
+('juan', SHA2(CONCAT('juan', 'paso'), 256), 'Juan Rivera', 0, 'usuario', NULL),
+('alvaro', SHA2(CONCAT('alvaro', 'paso'), 256), 'Alvaro Calderón', 0, 'usuario', NULL),
+('santiago', SHA2(CONCAT('santiago', 'paso'), 256), 'Santiago González', 0, 'usuario', NULL);
+
 
 
 -- Se insertan seis departamentos de ejemplo.

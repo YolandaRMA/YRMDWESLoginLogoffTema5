@@ -2,9 +2,13 @@
 <?php
 /**
  * @author: Yolanda Rodríguez Moreno
- * @since: 12/11/2026
+ * @since: 16/11/2026
  * Proyecto Login Logoff Tema 5.
  */
+
+// Se inicia la sesión para poder guardar los datos del usuario
+// que ha iniciado sesión y utilizarlos en las páginas privadas.
+session_start();
 
 // Se comprueba si se ha pulsado el botón Cancelar.
 // Si se ha pulsado, se vuelve a la página de inicio pública.
@@ -13,9 +17,13 @@ if (isset($_POST['cancelar'])) {
     exit();
 }
 
+// Se recupera el idioma almacenado en la cookie cookieIdioma.
+// Si todavía no existe, se establece español por defecto.
+$idioma = $_COOKIE['cookieIdioma'] ?? 'es';
+
 // Se incluye el archivo que contiene los datos de conexión
 // necesarios para establecer la conexión con la base de datos mediante PDO.
-require_once '../config/configDB00.php';
+require_once '../config/configDB00_home.php';
 
 // Se incluye la librería que contiene los métodos
 // utilizados para validar los datos introducidos en el formulario.
@@ -41,13 +49,16 @@ $aError = [
 // Así se puede conservar su contenido si se produce algún error.
 $usuarioIntroducido = "";
 
+// Se inicializa la variable de conexión.
+$miDB = null;
+
 // Se comprueba si se ha enviado el formulario pulsando el botón Entrar.
 if (isset($_POST['login'])) {
 
     // Se recoge el código de usuario y se eliminan los espacios
     // en blanco que pueda tener al principio o al final.
     $usuarioIntroducido = trim($_POST['usuario']);
-
+    //$usuarioIntroducido = strtolower(trim($_POST['usuario'])); ***mejor opcion o no??
     // Se comprueba que el código de usuario sea alfanumérico,
     // tenga entre 4 y 8 caracteres y sea obligatorio.
     // Estos límites coinciden con la restricción definida en la tabla T01_Usuario.
@@ -82,9 +93,6 @@ if (isset($_POST['login'])) {
     $entradaOK = false;
 }
 
-// Se inicializa la variable de conexión.
-$miDB = null;
-
 // Solamente se accede a la base de datos si los datos
 // introducidos en el formulario han superado las validaciones.
 if ($entradaOK) {
@@ -101,7 +109,7 @@ if ($entradaOK) {
         // SHA2 calcula el hash de la combinación del código de usuario
         // y la contraseña, igual que se hizo al insertar los usuarios.
         $sqlConsultaUsuario = <<<SQL
-            SELECT T01_CodUsuario
+            SELECT *
             FROM T01_Usuario
             WHERE T01_CodUsuario = :codigoUsuario
             AND T01_Password = SHA2(CONCAT(:codigoUsuarioHash, :contrasena), 256)
@@ -122,16 +130,53 @@ if ($entradaOK) {
         ]);
 
         // Se obtiene el registro que cumple las condiciones de la consulta.
-        // fetch() devuelve los datos encontrados o false si no existe ningún registro.
+        // fetch() devuelve un array asociativo con los datos del usuario
+        // o false si no existe ningún registro que coincida.
         $registroUsuario = $consultaUsuario->fetch(PDO::FETCH_ASSOC);
 
         // Se comprueba si se ha encontrado un usuario con esas credenciales.
         if ($registroUsuario) {
 
+            // Se prepara una consulta para incrementar el número de conexiones
+            // y actualizar la fecha y hora de la última conexión del usuario.
+            $sqlActualizarUsuario = <<<SQL
+                UPDATE T01_Usuario
+                SET T01_NumConexiones = T01_NumConexiones + 1,
+                    T01_FechaHoraUltimaConexion = NOW()
+                WHERE T01_CodUsuario = :codigoUsuario
+            SQL;
+
+            // Se prepara la consulta de actualización.
+            $actualizarUsuario = $miDB->prepare($sqlActualizarUsuario);
+
+            // Se ejecuta la actualización indicando el código del usuario.
+            $actualizarUsuario->execute([
+                ':codigoUsuario' => $usuarioIntroducido
+            ]);
+
+            // Se actualizan los datos del registro recuperado para que
+            // la sesión contenga también el número y la fecha de conexión nuevos.
+            $registroUsuario['T01_NumConexiones']++;
+
+            // Se guarda la fecha y hora actual en el registro del usuario.
+            // date() devuelve una cadena con la fecha y hora en el formato indicado.
+            $registroUsuario['T01_FechaHoraUltimaConexion'] = date('Y-m-d H:i:s');
+
+            // Se elimina el hash de la contraseña antes de guardar los datos
+            // del usuario en la sesión, ya que no es necesario conservarlo.
+            unset($registroUsuario['T01_Password']);
+
+            // Se guardan los datos del usuario en una variable de sesión.
+            // $_SESSION permite conservar esta información entre páginas
+            // mientras la sesión permanezca activa.
+            $_SESSION['userYRMDWESLoginLogoffTema5'] = $registroUsuario;
+
+            // Se cierra la conexión con la base de datos.
+            unset($miDB);
+
             // Si las credenciales son correctas, se redirige al usuario
             // a la página de acceso privado de la aplicación.
-            // exit() detiene la ejecución después de realizar la redirección.
-            header("Location: Programa.php");
+            header("Location: inicioPrivado.php");
             exit();
 
         } else {
@@ -153,28 +198,52 @@ if ($entradaOK) {
         unset($miDB);
     }
 }
+
+// Se preparan los textos del formulario según el idioma guardado en la cookie.
+if ($idioma === 'pt') {
+
+    $tituloPagina = "Início de sessão";
+    $textoUsuario = "Utilizador:";
+    $textoContrasena = "Palavra-passe:";
+    $textoCancelar = "Cancelar";
+    $textoEntrar = "Entrar";
+    $textoErrorCredenciales = "Utilizador ou palavra-passe incorretos.";
+    $textoErrorConexion = "Erro na base de dados:";
+
+} else {
+
+    $tituloPagina = "Inicio de sesión";
+    $textoUsuario = "Usuario:";
+    $textoContrasena = "Contraseña:";
+    $textoCancelar = "Cancelar";
+    $textoEntrar = "Entrar";
+    $textoErrorCredenciales = "Usuario o contraseña incorrectos.";
+    $textoErrorConexion = "Error en la base de datos:";
+}
 ?>
 
 <!DOCTYPE html>
-<html lang="es">
+<html lang="<?php echo $idioma; ?>">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inicio de sesión</title>
+    <title><?php echo $tituloPagina; ?></title>
     <link rel="stylesheet" href="../webroot/css/estilos.css">
 </head>
 
 <body>
 
     <header>
+
         <div class="cabecera-logo">
             <img src="../webroot/images/logoCandado.jpg" alt="Logo Login Logoff">
         </div>
 
         <div class="cabecera-titulos">
-            <h1>Inicio de sesión</h1>
+            <h1><?php echo $tituloPagina; ?></h1>
         </div>
+
     </header>
 
     <main>
@@ -183,7 +252,7 @@ if ($entradaOK) {
 
             <div class="campo">
 
-                <label for="usuario">Usuario:</label>
+                <label for="usuario"><?php echo $textoUsuario; ?></label>
 
                 <input
                     type="text"
@@ -204,7 +273,7 @@ if ($entradaOK) {
 
             <div class="campo">
 
-                <label for="contrasena">Contraseña:</label>
+                <label for="contrasena"><?php echo $textoContrasena; ?></label>
 
                 <input
                     type="password"
@@ -222,20 +291,24 @@ if ($entradaOK) {
 
             </div>
 
-            <input type="submit" name="cancelar" id="cancelar" value="Cancelar">
-            <input type="submit" name="login" id="login" value="Entrar">
+            <input type="submit" name="cancelar" id="cancelar"
+                   value="<?php echo $textoCancelar; ?>">
+
+            <input type="submit" name="login" id="login"
+                   value="<?php echo $textoEntrar; ?>">
 
             <?php
             // Si no se ha encontrado el usuario en la base de datos,
             // se muestra un mensaje indicando que las credenciales son incorrectas.
             if (!$usuarioEncontrado) {
-                echo "<p class='error'>Usuario o contraseña incorrectos.</p>";
+                echo "<p class='error'>" . $textoErrorCredenciales . "</p>";
             }
 
             // Si se ha producido un error de conexión o de consulta,
             // se muestra el mensaje correspondiente.
             if (!empty($errorConexion)) {
-                echo "<p class='error'>" . $errorConexion . "</p>";
+                echo "<p class='error'>" . $textoErrorConexion . " "
+                    . $errorConexion . "</p>";
             }
             ?>
 
@@ -244,22 +317,12 @@ if ($entradaOK) {
     </main>
 
     <footer>
-
-        <p>
-            <a href="../../YRMDWESProyectoDWES/indexProyectoDWES.php">Home</a>
-        </p>
-
+        <p><a href="../../YRMDWESProyectoDWES/indexProyectoDWES.php">Home</a></p>
         <div class="footer-text">
-            <p>
-                2026-27 IES Los Sauces. &copy; Todos los derechos reservados.
-                <a href="../../index.html">Yolanda Rodríguez Moreno</a>
-            </p>
-
-            <time datetime="2026-11-12">
-                Última actualización: 12 de noviembre de 2026
-            </time>
+            <p>2026-27 IES Los Sauces. &copy; Todos los derechos reservados.
+                <a href="../../index.html">Yolanda Rodríguez Moreno</a></p>
+            <time datetime="2026-11-16">Última actualización: 16 de Noviembre de 2026</time>
         </div>
-
     </footer>
 
 </body>
