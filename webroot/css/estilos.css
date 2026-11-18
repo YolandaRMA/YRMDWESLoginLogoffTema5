@@ -1,4 +1,7 @@
 
+
+@import url('https://fonts.googleapis.com/css2?family=TikTok+Sans:opsz,wght@12..36,300..900&display=swap');
+
 * {
     box-sizing: border-box;
     margin: 0;
@@ -6,18 +9,16 @@
 }
 
 body {
-    font-family: Arial, Helvetica, sans-serif;
-    background-color: #ffffff;
-    color: #111111;
+    font-family: 'TikTok Sans', Arial, Helvetica, sans-serif;
+    background-color: #000000;
+    color: #ffffff;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
 }
 
-/* CABECERA */
-
 header {
-    background-color: #111827;
+    background-color: #000000;
     color: #ffffff;
     text-align: center;
     padding: 30px 20px;
@@ -26,6 +27,7 @@ header {
     align-items: center;
     justify-content: center;
     position: relative;
+    border-bottom: 1px solid #252525;
 }
 
 .cabecera-logo {
@@ -49,40 +51,108 @@ header {
 header h1 {
     color: #ffffff;
     font-size: 30px;
-    font-weight: 400;
+    font-weight: 600;
     letter-spacing: 1px;
 }
-
-/* CONTENIDO PRINCIPAL */
-
 main {
     width: 90%;
     max-width: 1100px;
     margin: 0 auto;
     flex: 1;
     padding: 60px 0;
+    text-align: center;
+}
+
+main h2 {
+    color: #ffffff;
+    font-size: 25px;
+    font-weight: 600;
+    margin-bottom: 25px;
+}
+
+main p {
+    color: #d1d1d1;
+    line-height: 1.7;
 }
 
 main form {
     display: flex;
-    justify-content: center;
-    margin-bottom: 35px;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    width: 100%;
+    max-width: 420px;
+    margin: 25px auto 35px;
+}
+
+main form label {
+    display: block;
+    width: 100%;
+    text-align: left;
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+main input:not([type="submit"]) {
+    width: 100%;
+    padding: 13px 15px;
+    background-color: #181818;
+    color: #ffffff;
+    border: 1px solid #383838;
+    border-radius: 5px;
+    font-family: inherit;
+    font-size: 15px;
+    outline: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+main input:not([type="submit"]):focus {
+    border-color: #25F4EE;
+    box-shadow: 0 0 0 2px rgba(37, 244, 238, 0.12);
 }
 
 main input[type="submit"] {
-    background-color: #111827;
+    min-width: 150px;
+    padding: 12px 28px;
+    background-color: #FE2C55;
     color: #ffffff;
-    border: 1px solid #111827;
-    padding: 12px 30px;
-    font-size: 15px;
+    border: 1px solid #FE2C55;
+    border-radius: 5px;
     font-family: inherit;
+    font-size: 15px;
+    font-weight: 600;
     cursor: pointer;
-    transition: background-color 0.2s ease, color 0.2s ease;
+    transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 main input[type="submit"]:hover {
-    background-color: #374151;
-    border-color: #374151;
+    background-color: #e9234a;
+    border-color: #e9234a;
+    transform: translateY(-2px);
+    box-shadow: 3px 3px 0 #25F4EE;
+}
+
+main input[name="detalle"] {
+    background-color: #25F4EE;
+    border-color: #25F4EE;
+    color: #000000;
+}
+
+main input[name="detalle"]:hover {
+    background-color: #16d8d2;
+    border-color: #16d8d2;
+}
+
+main input[name="cerrarSesion"] {
+    background-color: #FE2C55;
+    border-color: #FE2C55;
+    color: #ffffff;
+}
+
+main input[name="cerrarSesion"]:hover {
+    background-color: #e9234a;
+    border-color: #e9234a;
 }
 
 .arbol-navegacion {
@@ -98,9 +168,6 @@ main input[type="submit"]:hover {
     max-width: 100%;
     height: auto;
 }
-
-/* SELECTOR DE IDIOMA */
-
 .selector-idioma {
     position: absolute;
     top: 18px;
@@ -111,7 +178,7 @@ main input[type="submit"]:hover {
     font-size: 0.75rem;
     font-weight: bold;
     letter-spacing: 1px;
-    color: white;
+    color: #ffffff;
 }
 
 .selector-idioma img {
@@ -127,24 +194,25 @@ main input[type="submit"]:hover {
     transform: scale(1.15);
 }
 
-/* PIE DE PÁGINA */
-
 footer {
-    background-color: #111827;
+    background-color: #000000;
     color: #ffffff;
     padding: 30px 20px;
     text-align: center;
     margin-top: 30px;
+    position: relative;
+    border-top: 1px solid #252525;
 }
 
 footer a {
     color: #ffffff;
     text-decoration: none;
     font-size: 14px;
+    transition: color 0.2s ease;
 }
 
 footer a:hover {
-    color: #d1d5db;
+    color: #25F4EE;
 }
 
 .footer-text {
@@ -153,14 +221,31 @@ footer a:hover {
 
 .footer-text p {
     font-size: 13px;
-    color: #d1d5db;
+    color: #b5b5b5;
 }
 
 .footer-text time {
     display: block;
     margin-top: 5px;
     font-size: 12px;
-    color: #9ca3af;
+    color: #777777;
+}
+
+.icono {
+    display: block;
+    width: fit-content;
+    margin: 8px auto 0;
+}
+
+.icono img {
+    display: block;
+    width: 25px;
+    height: auto;
+    transition: opacity 0.2s ease;
+}
+
+.icono:hover img {
+    opacity: 0.7;
 }
 
 /* ADAPTACIÓN A MÓVILES */
@@ -194,8 +279,18 @@ footer a:hover {
         padding: 30px 0;
     }
 
+    main h2 {
+        font-size: 21px;
+    }
+
     main form {
-        margin-bottom: 25px;
+        max-width: 100%;
+        gap: 12px;
+    }
+
+    main input[type="submit"] {
+        width: 100%;
+        max-width: 280px;
     }
 
     .arbol-navegacion {

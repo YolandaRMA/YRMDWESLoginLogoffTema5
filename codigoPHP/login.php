@@ -4,6 +4,11 @@
  * @author: Yolanda Rodríguez Moreno
  * @since: 16/11/2026
  * Proyecto Login Logoff Tema 5.
+ *
+ * Esta página permite iniciar sesión en la aplicación.
+ * Comprueba los datos introducidos, verifica el usuario y la contraseña
+ * en la base de datos y si son correctos guarda sus datos en la sesión
+ * para acceder a la parte privada de la aplicación.
  */
 
 // Se inicia la sesión para poder guardar los datos del usuario
@@ -23,23 +28,22 @@ $idioma = $_COOKIE['cookieIdioma'] ?? 'es';
 
 // Se incluye el archivo que contiene los datos de conexión
 // necesarios para establecer la conexión con la base de datos mediante PDO.
-require_once '../config/configDB00_home.php';
+require_once '../config/configDB00.php';
 
-// Se incluye la librería que contiene los métodos
-// utilizados para validar los datos introducidos en el formulario.
+// Se incluye la librería que contiene los métodos utilizados para validar los datos introducidos en el formulario.
 require_once '../core/231018libreriaValidacion.php';
 
-// Se inicializa la variable que indica si los datos del formulario son válidos.
+// Se inicializa la variable que indica si los datos del formulario son válidos
 $entradaOK = true;
 
-// Se inicializa la variable que indica si se han encontrado las credenciales.
+// Se inicializa la variable que indica si se han encontrado las credenciales
 $usuarioEncontrado = true;
 
 // Se inicializa la variable que almacenará los posibles errores de conexión.
 $errorConexion = "";
 
 // Se crea un array asociativo para guardar los mensajes de error
-// correspondientes a cada uno de los campos del formulario.
+// correspondientes a cada uno de los campos del formulario
 $aError = [
     'usuario' => "",
     'contrasena' => ""
@@ -52,13 +56,12 @@ $usuarioIntroducido = "";
 // Se inicializa la variable de conexión.
 $miDB = null;
 
-// Se comprueba si se ha enviado el formulario pulsando el botón Entrar.
+// Se comprueba si se ha enviado el formulario pulsando el botón Entrar
 if (isset($_POST['login'])) {
 
-    // Se recoge el código de usuario y se eliminan los espacios
-    // en blanco que pueda tener al principio o al final.
-    $usuarioIntroducido = trim($_POST['usuario']);
-    //$usuarioIntroducido = strtolower(trim($_POST['usuario'])); ***mejor opcion o no??
+    // Se recoge el código de usuario, elimina espacios en blanco y convierte a minúsculas
+    $usuarioIntroducido = strtolower(trim($_POST['usuario']));
+
     // Se comprueba que el código de usuario sea alfanumérico,
     // tenga entre 4 y 8 caracteres y sea obligatorio.
     // Estos límites coinciden con la restricción definida en la tabla T01_Usuario.
@@ -137,30 +140,38 @@ if ($entradaOK) {
         // Se comprueba si se ha encontrado un usuario con esas credenciales.
         if ($registroUsuario) {
 
+            // Se guarda la fecha de la última conexión anterior antes de actualizarla,
+            // para poder mostrarla después en la página privada.
+            $fechaHoraUltimaConexion = $registroUsuario['T01_FechaHoraUltimaConexion'];
+
+            // Se guarda la fecha y hora de la conexión que se está realizando ahora.
+            $fechaHoraConexionActual = date('Y-m-d H:i:s');
+
             // Se prepara una consulta para incrementar el número de conexiones
             // y actualizar la fecha y hora de la última conexión del usuario.
             $sqlActualizarUsuario = <<<SQL
                 UPDATE T01_Usuario
                 SET T01_NumConexiones = T01_NumConexiones + 1,
-                    T01_FechaHoraUltimaConexion = NOW()
+                    T01_FechaHoraUltimaConexion = :fechaHoraConexionActual
                 WHERE T01_CodUsuario = :codigoUsuario
             SQL;
 
             // Se prepara la consulta de actualización.
             $actualizarUsuario = $miDB->prepare($sqlActualizarUsuario);
 
-            // Se ejecuta la actualización indicando el código del usuario.
+            // Se ejecuta la actualización indicando el código del usuario
+            // y la fecha y hora de la conexión actual.
             $actualizarUsuario->execute([
-                ':codigoUsuario' => $usuarioIntroducido
+                ':codigoUsuario' => $usuarioIntroducido,
+                ':fechaHoraConexionActual' => $fechaHoraConexionActual
             ]);
 
             // Se actualizan los datos del registro recuperado para que
             // la sesión contenga también el número y la fecha de conexión nuevos.
             $registroUsuario['T01_NumConexiones']++;
 
-            // Se guarda la fecha y hora actual en el registro del usuario.
-            // date() devuelve una cadena con la fecha y hora en el formato indicado.
-            $registroUsuario['T01_FechaHoraUltimaConexion'] = date('Y-m-d H:i:s');
+            // Se guarda la fecha y hora de la conexión actual en el registro del usuario.
+            $registroUsuario['T01_FechaHoraUltimaConexion'] = $fechaHoraConexionActual;
 
             // Se elimina el hash de la contraseña antes de guardar los datos
             // del usuario en la sesión, ya que no es necesario conservarlo.
@@ -170,6 +181,10 @@ if ($entradaOK) {
             // $_SESSION permite conservar esta información entre páginas
             // mientras la sesión permanezca activa.
             $_SESSION['userYRMDWESLoginLogoffTema5'] = $registroUsuario;
+
+            // Se guarda también la fecha de la conexión anterior en la sesión,
+            // porque la fecha de la base de datos ya se ha actualizado.
+            $_SESSION['fechaHoraUltimaConexion'] = $fechaHoraUltimaConexion;
 
             // Se cierra la conexión con la base de datos.
             unset($miDB);
@@ -321,7 +336,7 @@ if ($idioma === 'pt') {
         <div class="footer-text">
             <p>2026-27 IES Los Sauces. &copy; Todos los derechos reservados.
                 <a href="../../index.html">Yolanda Rodríguez Moreno</a></p>
-            <time datetime="2026-11-16">Última actualización: 16 de Noviembre de 2026</time>
+            <time datetime="2026-11-18">Última actualización: 18 de Noviembre de 2026</time>
         </div>
     </footer>
 
