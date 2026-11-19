@@ -1,3 +1,18 @@
+<?php
+    session_start();
+    // Si el usuario no esta logueado, lo echamos al login
+        if (!isset($_SESSION['usuarioMDCDWESAppLoginLogoff'])) {
+            header("Location: login.php");
+            exit;
+        }
+
+        // peticion de phpinfo antes de cargar el HTML
+        if (isset($_GET['ver_phpinfo'])) {
+            phpinfo();
+            exit;
+        }
+ ?>
+
 <!DOCTYPE html>
 <html>
     <head>
@@ -16,14 +31,14 @@
             <?php
             // array para respetar el orden requerido para mostrar las superglobales
             $aOrdenSuperglobales = [
-                '_SESSION',
-                '_COOKIE',
-                '_SERVER',
-                '_REQUEST',
-                '_GET',
-                '_POST',
-                '_FILES',
-                '_ENV'
+               '$_SESSION' => $_SESSION,
+                    '$_COOKIE'  => $_COOKIE,
+                    '$_SERVER'  => $_SERVER,
+                    '$_REQUEST' => $_REQUEST,
+                    '$_GET'     => $_GET,
+                    '$_POST'    => $_POST,
+                    '$_FILES'   => $_FILES,
+                    '$_ENV'     => $_ENV
             ];
 
             // se recorren las superglobales siguiendo el orden establecido
@@ -49,10 +64,14 @@
             ?>
         </main>
         <footer>
-            <p><a href="../indexProyectoTema5.php">Home</a></p>
+            <p><a href="../../YRMDWESProyectoDWES/indexProyectoDWES.php">Home</a></p>
             <div class="footer-text">
-                <p>2026-27 IES Los Sauces. &copy; Todos los derechos reservados.<a href="../index.html">Yolanda Rodríguez Moreno</a></p>
-                <time datetime="2026-09-30">Última actualización: 05 de Octubre de 2026</time>
+                <p>2026-27 IES Los Sauces. &copy; Todos los derechos reservados.
+                    <a href="../../index.html">Yolanda Rodríguez Moreno</a></p>
+                <time datetime="2026-11-18">Última actualización: 18 de Noviembre de 2026</time>
+                <a class="icono" href="https://github.com/YolandaRMA/YRMDWESLoginLogoffTema5" target="_blank">
+                    <img src="webroot/images/iconoGitHub.png" alt="">
+                </a>
             </div>
         </footer>
     </body>
