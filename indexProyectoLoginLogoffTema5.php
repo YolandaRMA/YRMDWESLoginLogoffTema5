@@ -113,8 +113,6 @@ if ($idioma === 'pt') {
             <img src="webroot/images/iconoGitHub.png" alt="">
         </a>
         </div>
-        
     </footer>
-
 </body>
 </html>

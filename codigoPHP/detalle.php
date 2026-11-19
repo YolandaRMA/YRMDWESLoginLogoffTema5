@@ -1,6 +1,6 @@
 <?php
     session_start();
-    // Si el usuario no esta logueado, lo echamos al login
+    // Si usuario no logueado, re-direcciona al index. 
         if (!isset($_SESSION['usuarioMDCDWESAppLoginLogoff'])) {
             header("Location: login.php");
             exit;
