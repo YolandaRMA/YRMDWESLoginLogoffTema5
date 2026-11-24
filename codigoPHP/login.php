@@ -15,12 +15,12 @@
 // que ha iniciado sesión y utilizarlos en las páginas privadas.
 session_start();
 
-
-// Si el usuario ya ha iniciado la sesion, lo redireccionamos al accesso privado
+// Si el usuario ya ha iniciado la sesión, lo redireccionamos al acceso privado.
 if (isset($_SESSION['userYRMDWESLoginLogoffTema5'])) {
     header("Location: inicioPrivado.php");
     exit;
 }
+
 // Se comprueba si se ha pulsado el botón Cancelar.
 // Si se ha pulsado, se vuelve a la página de inicio pública.
 if (isset($_REQUEST['cancelar'])) {
@@ -39,17 +39,17 @@ require_once '../config/configDB00.php';
 // Se incluye la librería que contiene los métodos utilizados para validar los datos introducidos en el formulario.
 require_once '../core/231018libreriaValidacion.php';
 
-// Se inicializa la variable que indica si los datos del formulario son válidos
+// Se inicializa la variable que indica si los datos del formulario son válidos.
 $entradaOK = true;
 
-// Se inicializa la variable que indica si se han encontrado las credenciales
+// Se inicializa la variable que indica si se han encontrado las credenciales.
 $usuarioEncontrado = true;
 
 // Se inicializa la variable que almacenará los posibles errores de conexión.
 $errorConexion = "";
 
 // Se crea un array asociativo para guardar los mensajes de error
-// correspondientes a cada uno de los campos del formulario
+// correspondientes a cada uno de los campos del formulario.
 $aError = [
     'usuario' => "",
     'contrasena' => ""
@@ -59,22 +59,28 @@ $aError = [
 // Así se puede conservar su contenido si se produce algún error.
 $usuarioIntroducido = "";
 
+// Se inicializa la variable que almacenará la contraseña introducida.
+$contrasenaIntroducida = "";
+
 // Se inicializa la variable de conexión.
 $miDB = null;
 
-// Se comprueba si se ha enviado el formulario pulsando el botón Entrar
+// Se comprueba si se ha enviado el formulario pulsando el botón Entrar.
 if (isset($_REQUEST['login'])) {
 
-    // Se recoge el código de usuario, elimina espacios en blanco y convierte a minúsculas
-    $usuarioIntroducido = strtolower(trim($_POST['usuario']));
+    // Se recogen los datos del formulario mediante POST.
+    // El operador ?? evita avisos si algún campo no está definido.
+    $usuarioIntroducido = strtolower(trim($_POST['usuario'] ?? ''));
+    $contrasenaIntroducida = trim($_POST['contrasena'] ?? '');
 
     // Se comprueba que el código de usuario sea alfanumérico,
     // tenga entre 4 y 8 caracteres y sea obligatorio.
     // Estos límites coinciden con la restricción definida en la tabla T01_Usuario.
-    $aError['usuario'] = validacionFormularios::comprobarAlfaNumerico( $usuarioIntroducido,8,4,1);
+    $aError['usuario'] = validacionFormularios::comprobarAlfaNumerico($usuarioIntroducido, 8, 4, 1);
+
     // Se comprueba que la contraseña sea alfanumérica,
     // tenga como máximo 1000 caracteres y sea obligatoria.
-    $aError['contrasena'] = validacionFormularios::comprobarAlfaNumerico($_POST['contrasena'],1000,1,1);
+    $aError['contrasena'] = validacionFormularios::comprobarAlfaNumerico($contrasenaIntroducida, 1000, 1, 1);
 
     // Se recorren los mensajes de error del formulario.
     // Si alguno contiene un mensaje, los datos no son válidos.
@@ -107,7 +113,7 @@ if ($entradaOK) {
         // SHA2 calcula el hash de la combinación del código de usuario
         // y la contraseña, igual que se hizo al insertar los usuarios.
         $sqlConsultaUsuario = <<<SQL
-            SELECT *FROM T01_Usuario
+            SELECT * FROM T01_Usuario
             WHERE T01_CodUsuario = :codigoUsuario
             AND T01_Password = SHA2(CONCAT(:codigoUsuarioHash, :contrasena), 256)
         SQL;
@@ -123,10 +129,10 @@ if ($entradaOK) {
         $consultaUsuario->execute([
             ':codigoUsuario' => $usuarioIntroducido,
             ':codigoUsuarioHash' => $usuarioIntroducido,
-            ':contrasena' => trim($_POST['contrasena'])
+            ':contrasena' => $contrasenaIntroducida
         ]);
 
-        // Se obtiene el registro que cumple las condiciones de la consulta
+        // Se obtiene el registro que cumple las condiciones de la consulta.
         // fetch() devuelve un array asociativo con los datos del usuario
         // o false si no existe ningún registro que coincida.
         $registroUsuario = $consultaUsuario->fetch(PDO::FETCH_ASSOC);
@@ -261,7 +267,7 @@ if ($idioma === 'pt') {
 
             <div class="campo">
                 <label for="usuario"><?php echo $textoUsuario; ?></label>
-                <input type="text"  name="usuario" id="usuario" value="<?php echo $usuarioIntroducido; ?>">
+                <input type="text" name="usuario" id="usuario" value="<?php echo $usuarioIntroducido; ?>">
 
                 <?php
                 // Se muestra el mensaje de validación del usuario
@@ -314,13 +320,17 @@ if ($idioma === 'pt') {
 
     <footer>
         <p><a href="../../YRMDWESProyectoDWES/indexProyectoDWES.php">Home</a></p>
+
         <div class="footer-text">
             <p>2026-27 IES Los Sauces. &copy; Todos los derechos reservados.
-                <a href="../../index.html">Yolanda Rodríguez Moreno</a></p>
-            <time datetime="2026-11-18">Última actualización: 18 de Noviembre de 2026</time>
+                <a href="../../index.html">Yolanda Rodríguez Moreno</a>
+            </p>
+
+            <time datetime="2026-11-23">Última actualización: 23 de Noviembre de 2026</time>
+
             <a class="icono" href="https://github.com/YolandaRMA/YRMDWESLoginLogoffTema5" target="_blank">
-            <img src="webroot/images/iconoGitHub.png" alt="">
-        </a>
+                <img src="../webroot/images/iconoGitHub.png" alt="">
+            </a>
         </div>
     </footer>
 

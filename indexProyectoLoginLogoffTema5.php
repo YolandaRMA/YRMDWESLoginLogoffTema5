@@ -66,9 +66,11 @@ if ($idioma === 'pt') {
             <img src="webroot/images/logoCandado.jpg" alt="Logo Login Logoff">
             <br>
         </div>
+
         <div class="cabecera-titulos">
             <h1><?php echo $tituloPagina; ?></h1>
         </div>
+
         <!-- Selector para cambiar el idioma de la aplicación. -->
         <div class="selector-idioma">
 
@@ -103,15 +105,20 @@ if ($idioma === 'pt') {
 
         </div>
     </main>
+
     <footer>
         <p><a href="../YRMDWESProyectoDWES/indexProyectoDWES.php">Home</a></p>
+
         <div class="footer-text">
             <p>2026-27 IES Los Sauces. &copy; Todos los derechos reservados.
-                <a href="../index.html">Yolanda Rodríguez Moreno</a></p>
-            <time datetime="2026-11-18">Última actualización: 18 de noviembre de 2026</time>
-        <a class="icono" href="https://github.com/YolandaRMA/YRMDWESLoginLogoffTema5" target="_blank">
-            <img src="webroot/images/iconoGitHub.png" alt="">
-        </a>
+                <a href="../index.html">Yolanda Rodríguez Moreno</a>
+            </p>
+
+            <time datetime="2026-11-23">Última actualización: 23 de noviembre de 2026</time>
+
+            <a class="icono" href="https://github.com/YolandaRMA/YRMDWESLoginLogoffTema5" target="_blank">
+                <img src="webroot/images/iconoGitHub.png" alt="">
+            </a>
         </div>
     </footer>
 </body>
