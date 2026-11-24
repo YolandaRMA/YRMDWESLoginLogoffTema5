@@ -74,6 +74,35 @@ function mostrarContenido($contenido) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../webroot/css/estilos.css">
+    <style>
+    /* Estilos internos para solucionar el verso */
+    main {
+        text-align: left;
+    }
+
+    main h2,
+    main h3 {
+        text-align: left;
+    }
+
+    main ul {
+        list-style: none;
+        padding-left: 15px;
+        margin: 10px 0;
+    }
+
+    main li {
+        text-align: left;
+        margin-bottom: 8px;
+        overflow-wrap: anywhere;
+    }
+
+    main hr {
+        margin: 25px 0;
+        border: 0;
+        border-top: 1px solid #383838;
+    }
+</style>
     <title>Variables superglobales</title>
 </head>
 
